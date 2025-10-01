@@ -26,11 +26,12 @@ jobs:
           key: cache-3a85937
 
       - name: 'prime-cache-3a85937'
-        run: echo Cache hit was: ${{ steps.cache-npm.outputs.cache-hit }}
+        run: |
+          echo "Cache hit was: ${{ steps.cache-npm.outputs.cache-hit }}"
+
 
       - name: 'Install dependencies'
         run: npm install
 
       - name: 'Run test script'
         run: npm test
-
