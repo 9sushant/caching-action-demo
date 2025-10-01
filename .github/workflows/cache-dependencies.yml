@@ -1,0 +1,51 @@
+    name: 'Demonstrate Dependency Caching'
+
+    on:
+      # Allow running this workflow manually from the Actions tab
+      workflow_dispatch:
+      # Also run on pushes to the main branch
+      push:
+        branches:
+          - main
+
+    jobs:
+      build-and-test:
+        runs-on: ubuntu-latest
+
+        steps:
+          # 1. First, check out the repository's code so the workflow can access it.
+          - name: 'Checkout code'
+            uses: actions/checkout@v4
+
+          # 2. Set up the Node.js environment.
+          - name: 'Setup Node.js'
+            uses: actions/setup-node@v4
+            with:
+              node-version: '20'
+
+          # 3. This is the caching step. It will try to restore cached dependencies.
+          - name: 'Cache node modules'
+            id: cache-npm # Give this step an ID to refer to its output later
+            uses: actions/cache@v4
+            with:
+              # The folder to cache: 'node_modules' is where npm installs packages.
+              path: node_modules
+              # The key for this cache. The first run will use this key to save the cache.
+              key: cache-3a85937
+
+          # 4. This step echoes whether the cache was found or not.
+          #    It uses the output of the 'cache-npm' step defined above.
+          #    This fulfills the requirement for a step named 'prime-cache-3a85937'.
+          - name: 'prime-cache-3a85937'
+            run: echo "Cache hit: ${{ steps.cache-npm.outputs.cache-hit }}"
+
+          # 5. Install dependencies.
+          #    If the cache was restored, this step will be very fast because it will
+          #    find that all the necessary packages are already there.
+          - name: 'Install dependencies'
+            run: npm install
+
+          # 6. Run a simple test script to confirm the dependencies were installed.
+          - name: 'Run test script'
+            run: npm test
+    
