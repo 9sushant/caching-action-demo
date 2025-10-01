@@ -1,0 +1,15 @@
+    {
+      "name": "caching-demo",
+      "version": "1.0.0",
+      "description": "A simple project to demonstrate GitHub Actions caching.",
+      "main": "index.js",
+      "scripts": {
+        "test": "cowsay 'Moo-ve along, nothing to see here!'"
+      },
+      "author": "",
+      "license": "ISC",
+      "dependencies": {
+        "cowsay": "^1.5.0"
+      }
+    }
+    
